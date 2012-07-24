@@ -34,6 +34,7 @@
     <string name="error_labels_load">标签加载失败</string>
     <string name="error_bookmarks_load">书签加载失败</string>
     <string name="error_members_load">成员加载失败</string>
+    <string name="error_commits_load">提交加载失败</string>
     <!--  -->
 
 
@@ -46,12 +47,13 @@
     <string name="loading_repositories">加载版本库列表…</string>
     <string name="loading_issue">加载 Issue…</string>
     <string name="loading_news">加载新鲜事…</string>
-    <string name="loading_followers">加载关注我的用户列表…</string>
+    <string name="loading_followers">加载用户列表…</string>
     <string name="loading_people">加载用户列表…</string>
     <string name="loading_gists">加载 Gist 列表…</string>
     <string name="loading_collaborators">加载协作者…</string>
     <string name="loading_milestones">加载里程碑…</string>
     <string name="loading_labels">加载标签…</string>
+    <string name="loading_commits">加载提交…</string>
     <!--  -->
 
 
@@ -64,6 +66,7 @@
     <string name="no_followers">暂无关注我的用户</string>
     <string name="no_members">暂无成员</string>
     <string name="no_news">暂无新鲜事</string>
+    <string name="no_commits">暂无提交</string>
     <!--  -->
 
 
@@ -77,7 +80,8 @@
     <string name="app_name">GitHub</string>
     <string name="news">新鲜事</string>
     <string name="issues">Issues</string>
-    <string name="gists">Gist</string>
+    <string name="gists">Gists</string>
+    <string name="commits">提交</string>
     <string name="dashboard_issues">Issue 面板</string>
     <string name="find_repositories">查询版本库</string>
     <string name="find_issues">查询 Issue </string>
@@ -104,10 +108,10 @@
     <string name="comment">评论</string>
     <string name="delete">删除</string>
     <string name="refresh">刷新</string>
-    <string name="dasbhoard_watched">我关注的</string>
-    <string name="dasbhoard_assigned">指派给我的</string>
-    <string name="dasbhoard_created">我创建的</string>
-    <string name="dasbhoard_mentioned">提到我的</string>
+    <string name="dashboard_watched">我关注的</string>
+    <string name="dashboard_assigned">指派给我的</string>
+    <string name="dashboard_created">我创建的</string>
+    <string name="dashboard_mentioned">提到我的</string>
     <string name="dashboard_issues_title">Issue 面板</string>
     <string name="bookmarks">书签</string>
     <string name="gists_title">Gist 列表</string>
@@ -185,8 +189,8 @@
     <string name="prefix_updated">更新了\u0020</string>
     <string name="prefix_opened">开放了\u0020</string>
     <string name="clear">清除</string>
-    <string name="open_issues">开放中 Issue</string>
-    <string name="closed_issues">已关闭 Issue</string>
+    <string name="open_issues">开放中的 Issue</string>
+    <string name="closed_issues">已关闭的 Issue</string>
     <string name="confirm_bookmark_delete_title">删除书签</string>
     <string name="save">保存</string>
     <string name="apply">应用</string>
@@ -209,6 +213,8 @@
     <string name="authenticator_conflict_title">应用冲突</string>
     <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
     <string name="opening_repository">正在打开 {0}…</string>
-    <string name="commit_compare_title">Commit Compare</string>
+    <string name="commit_compare_title">提交比较</string>
+    <string name="parent_commit">先导提交</string>
+    <string name="commit_prefix">提交\u0020</string>
 
 </resources>
