@@ -16,7 +16,9 @@
 package com.github.mobile.ui.commit;
 
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
@@ -67,9 +69,9 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      * @param avatars
      * @param imageGetter
      */
-    public CommitFileListAdapter(LayoutInflater inflater,
-            DiffStyler diffStyler, AvatarLoader avatars,
-            HttpImageGetter imageGetter) {
+    public CommitFileListAdapter(final LayoutInflater inflater,
+            final DiffStyler diffStyler, final AvatarLoader avatars,
+            final HttpImageGetter imageGetter) {
         super(inflater);
 
         this.diffStyler = diffStyler;
@@ -86,12 +88,30 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         return 4;
     }
 
+    @Override
+    public long getItemId(int position) {
+        switch (getItemViewType(position)) {
+        case TYPE_FILE_HEADER:
+            String sha = ((CommitFile) getItem(position)).getSha();
+            if (!TextUtils.isEmpty(sha))
+                return sha.hashCode();
+            else
+                return super.getItemId(position);
+        case TYPE_COMMENT:
+        case TYPE_LINE_COMMENT:
+            return ((CommitComment) getItem(position)).getId();
+        default:
+            return super.getItemId(position);
+        }
+
+    }
+
     /**
      * Add file to adapter
      *
      * @param file
      */
-    public void addItem(FullCommitFile file) {
+    public void addItem(final FullCommitFile file) {
         addItem(TYPE_FILE_HEADER, file.getFile());
         List<CharSequence> lines = diffStyler.get(file.getFile().getFilename());
         int number = 0;
@@ -108,7 +128,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param file
      */
-    public void addItem(CommitFile file) {
+    public void addItem(final CommitFile file) {
         addItem(TYPE_FILE_HEADER, file);
         addItems(TYPE_FILE_LINE, diffStyler.get(file.getFilename()));
     }
@@ -118,11 +138,12 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param comment
      */
-    public void addComment(CommitComment comment) {
+    public void addComment(final CommitComment comment) {
         addItem(TYPE_COMMENT, comment);
     }
 
-    protected int getChildLayoutId(int type) {
+    @Override
+    protected int getChildLayoutId(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             return layout.commit_diff_file_header;
@@ -138,7 +159,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected int[] getChildViewIds(int type) {
+    protected int[] getChildViewIds(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             return new int[] { id.tv_name, id.tv_folder, id.tv_stats };
@@ -154,7 +175,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected void update(int position, Object item, int type) {
+    protected void update(final int position, final Object item, final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             CommitFile file = (CommitFile) item;
@@ -162,11 +183,9 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(id.tv_name, path.substring(lastSlash + 1));
-                ViewUtils
-                        .setGone(
-                                setText(id.tv_folder,
-                                        path.substring(0, lastSlash + 1)),
-                                false);
+                TextView folderText = setText(id.tv_folder,
+                        path.substring(0, lastSlash + 1));
+                ViewUtils.setGone(folderText, false);
             } else {
                 setText(id.tv_name, path);
                 setGone(id.tv_folder, true);
@@ -195,8 +214,6 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
                     TimeUtils.getRelativeTime(comment.getUpdatedAt()));
             imageGetter.bind(textView(id.tv_comment_body),
                     comment.getBodyHtml(), comment.getId());
-            return;
-        default:
             return;
         }
     }

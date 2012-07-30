@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.commit;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -28,7 +29,7 @@ import java.util.Collection;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
- *
+ * Adapter to display commits
  */
 public class CommitListAdapter extends
         ItemListAdapter<RepositoryCommit, CommitView> {
@@ -61,6 +62,15 @@ public class CommitListAdapter extends
     }
 
     @Override
+    public long getItemId(int position) {
+        String sha = getItem(position).getSha();
+        if (!TextUtils.isEmpty(sha))
+            return sha.hashCode();
+        else
+            return super.getItemId(position);
+    }
+
+    @Override
     protected void update(final int position, final CommitView view,
             final RepositoryCommit item) {
         view.sha.setText(CommitUtils.abbreviate(item.getSha()));
@@ -71,12 +81,9 @@ public class CommitListAdapter extends
         authorText.append(CommitUtils.getAuthorDate(item));
         view.author.setText(authorText);
 
-        if (item.getAuthor() != null)
-            avatars.bind(view.avatar, item.getAuthor());
-        else
-            avatars.bind(view.avatar, item.getCommit().getAuthor());
-
+        CommitUtils.bindAuthor(item, avatars, view.avatar);
         view.message.setText(item.getCommit().getMessage());
+        view.comments.setText(CommitUtils.getCommentCount(item));
     }
 
     @Override

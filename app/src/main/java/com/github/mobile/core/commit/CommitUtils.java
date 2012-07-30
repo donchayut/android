@@ -36,9 +36,13 @@ import org.eclipse.egit.github.core.User;
  */
 public class CommitUtils {
 
-    private static NumberFormat FORMAT = NumberFormat.getIntegerInstance();
+    /**
+     * Length of used for abbreviations
+     */
+    public static final int LENGTH = 10;
 
-    private static final int LENGTH = 10;
+    private static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     /**
      * Abbreviate commit sha to default length if longer
@@ -80,10 +84,7 @@ public class CommitUtils {
      * @return true if valid, false otherwise
      */
     public static boolean isValidCommit(final String sha) {
-        if (!TextUtils.isEmpty(sha))
-            return sha.matches("[a-fA-F0-9]+");
-        else
-            return false;
+        return !TextUtils.isEmpty(sha) && sha.matches("[a-fA-F0-9]+");
     }
 
     /**
@@ -203,6 +204,20 @@ public class CommitUtils {
     }
 
     /**
+     * Get comment count
+     *
+     * @param commit
+     * @return count
+     */
+    public static String getCommentCount(final RepositoryCommit commit) {
+        final Commit rawCommit = commit.getCommit();
+        if (rawCommit != null)
+            return FORMAT.format(rawCommit.getCommentCount());
+        else
+            return "0";
+    }
+
+    /**
      * Format stats into {@link StyledText}
      *
      * @param files
@@ -238,5 +253,32 @@ public class CommitUtils {
             fileDetails.append("1 deletion");
 
         return fileDetails;
+    }
+
+    /**
+     * Get file name for commit file
+     *
+     * @param file
+     * @return last segment of commit file path
+     */
+    public static String getName(final CommitFile file) {
+        return file != null ? getName(file.getFilename()) : null;
+    }
+
+    /**
+     * Get file name for path
+     *
+     * @param path
+     * @return last segment of path
+     */
+    public static String getName(final String path) {
+        if (TextUtils.isEmpty(path))
+            return path;
+
+        int lastSlash = path.lastIndexOf('/');
+        if (lastSlash != -1 && lastSlash + 1 < path.length())
+            return path.substring(lastSlash + 1);
+        else
+            return path;
     }
 }
