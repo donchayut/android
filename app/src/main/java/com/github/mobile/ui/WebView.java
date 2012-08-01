@@ -16,7 +16,7 @@
 package com.github.mobile.ui;
 
 import static android.os.Build.VERSION.SDK_INT;
-import android.annotation.SuppressLint;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.content.Context;
 import android.util.AttributeSet;
 
@@ -41,7 +41,6 @@ public class WebView extends android.webkit.WebView {
      * @param attrs
      * @param defStyle
      */
-    @SuppressLint("NewApi")
     public WebView(final Context context, final AttributeSet attrs,
             final int defStyle) {
         super(context, attrs, defStyle);
@@ -74,10 +73,9 @@ public class WebView extends android.webkit.WebView {
             return computeHorizontalScrollOffset() < range - 1;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public boolean canScrollHorizontally(final int direction) {
-        if (SDK_INT >= 14)
+        if (SDK_INT >= ICE_CREAM_SANDWICH)
             return super.canScrollHorizontally(direction);
         else
             return canScrollCodeHorizontally(direction);
