@@ -53,6 +53,8 @@ public class RepositoryUtils {
         if ("about".equals(name) //
                 || "blog".equals(name) //
                 || "contact".equals(name) //
+                || "dashboard".equals(name) //
+                || "downloads".equals(name) //
                 || "explore".equals(name) //
                 || "features".equals(name) //
                 || "inbox".equals(name) //
@@ -60,11 +62,14 @@ public class RepositoryUtils {
                 || "logout".equals(name) //
                 || "new".equals(name) //
                 || "notifications".equals(name) //
+                || "organizations".equals(name) //
                 || "repositories".equals(name) //
                 || "search".equals(name) //
                 || "settings".equals(name) //
+                || "stars".equals(name) //
                 || "timeline".equals(name) //
-                || "training".equals(name))
+                || "training".equals(name) //
+                || "users".equals(name))
             return false;
         else
             return true;

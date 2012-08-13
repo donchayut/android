@@ -70,7 +70,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.UserService;
 
 import roboguice.inject.InjectView;
@@ -86,9 +85,12 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+    /**
+     * Initial user name
+     */
+    public static final String PARAM_USERNAME = "username";
 
-    private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
 
     private static final String TAG = "LoginActivity";
 
@@ -171,6 +173,12 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
         signupText.setText(Html.fromHtml(getString(string.signup_link)));
+
+        if (!TextUtils.isEmpty(username)) {
+            loginText.setText(username);
+            loginText.setEnabled(false);
+            loginText.setFocusable(false);
+        }
 
         TextWatcher watcher = new TextWatcherAdapter() {
 
@@ -287,18 +295,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
                 Log.d(TAG, "Exception requesting authenticated user", e);
 
-                Throwable cause = e.getCause() != null ? e.getCause() : e;
-
-                boolean badCredentials = false;
-                if (e instanceof RequestException
-                        && ((RequestException) e).getStatus() == 401)
-                    badCredentials = true;
-                // A 401 can be returned as an IOException with this message
-                else if ("Received authentication challenge is null"
-                        .equals(cause.getMessage()))
-                    badCredentials = true;
-
-                if (badCredentials)
+                if (AccountUtils.isUnauthorized(e))
                     onAuthenticationResult(false);
                 else
                     ToastUtils.show(LoginActivity.this, e,
