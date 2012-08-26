@@ -124,6 +124,33 @@ public class HtmlUtilsTest {
     }
 
     /**
+     * Paragraph replaced with break
+     */
+    @Test
+    public void paragraphReplacedWithBreak() {
+        String html = "line1<p>line2</p>";
+        assertEquals("line1<br>line2", format(html));
+    }
+
+    /**
+     * em tags replaced with i tags
+     */
+    @Test
+    public void emReplacedWithI() {
+        String html = "a<em>b</em>c";
+        assertEquals("a<i>b</i>c", format(html));
+    }
+
+    /**
+     * strong tags replaced with b tags
+     */
+    @Test
+    public void strongReplacedWithB() {
+        String html = "<strong>a</strong>";
+        assertEquals("<b>a</b>", format(html));
+    }
+
+    /**
      * Leading whitespace is removed
      */
     @Test
