@@ -37,6 +37,8 @@
     <string name="error_commits_load">Loading commits failed</string>
     <string name="error_commit_load">Loading commit failed</string>
     <string name="error_file_load">Loading file failed</string>
+    <string name="error_code_load">Loading code failed</string>
+    <string name="error_refs_load">Loading branches &amp; tags failed</string>
     <!--  -->
 
 
@@ -57,6 +59,7 @@
     <string name="loading_labels">Loading Labels…</string>
     <string name="loading_commits">Loading Commits…</string>
     <string name="loading_files_and_comments">Loading Files &amp; Comments…</string>
+    <string name="loading_refs">Loading Branches &amp; Tags…</string>
     <!--  -->
 
 
@@ -146,6 +149,7 @@
     <string name="select_assignee">Select Assignee</string>
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
+    <string name="select_ref">Select Branch or Tag</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
@@ -223,5 +227,6 @@
     <string name="comparing_commits">Comparing {0} commits</string>
     <string name="enable_wrapping">Enable wrapping</string>
     <string name="disable_wrapping">Disable wrapping</string>
+    <string name="code">Code</string>
 
 </resources>
