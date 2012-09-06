@@ -31,6 +31,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
@@ -104,6 +106,59 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             setOrg(org);
     }
 
+    private void reloadOrgs() {
+        getSupportLoaderManager().restartLoader(0, null,
+                new LoaderCallbacks<List<User>>() {
+
+                    @Override
+                    public Loader<List<User>> onCreateLoader(int id,
+                            Bundle bundle) {
+                        return HomeActivity.this.onCreateLoader(id, bundle);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<List<User>> loader,
+                            final List<User> users) {
+                        HomeActivity.this.onLoadFinished(loader, users);
+                        if (users.isEmpty())
+                            return;
+
+                        Window window = getWindow();
+                        if (window == null)
+                            return;
+                        View view = window.getDecorView();
+                        if (view == null)
+                            return;
+
+                        view.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                isDefaultUser = false;
+                                setOrg(users.get(0));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<List<User>> loader) {
+                        HomeActivity.this.onLoaderReset(loader);
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Restart loader if default account doesn't match currently loaded
+        // account
+        List<User> currentOrgs = orgs;
+        if (currentOrgs != null && !currentOrgs.isEmpty()
+                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+            reloadOrgs();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -134,7 +189,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
         this.org = org;
 
-        boolean isDefaultUser = isDefaultUser(org);
+        boolean isDefaultUser = AccountUtils.isUser(this, org);
         boolean changed = this.isDefaultUser != isDefaultUser;
         this.isDefaultUser = isDefaultUser;
         if (adapter == null)
@@ -225,12 +280,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public void onLoaderReset(Loader<List<User>> listLoader) {
-    }
-
-    private boolean isDefaultUser(final User org) {
-        final String accountLogin = AccountUtils.getLogin(this);
-        return org != null && accountLogin != null
-                && accountLogin.equals(org.getLogin());
     }
 
     @Override

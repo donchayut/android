@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.code;
+package com.github.mobile.core.ref;
 
 import android.text.TextUtils;
 
@@ -71,7 +71,7 @@ public class RefUtils {
         if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
             return name.substring(PREFIX_REFS.length());
         else
-            return null;
+            return name;
     }
 
     /**
@@ -109,9 +109,6 @@ public class RefUtils {
             return false;
 
         String name = ref.getRef();
-        if (TextUtils.isEmpty(name))
-            return false;
-
-        return !name.startsWith("refs/pull");
+        return !TextUtils.isEmpty(name) && !name.startsWith("refs/pull");
     }
 }
