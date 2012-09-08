@@ -13,28 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core;
+package com.github.mobile.ui;
 
-import android.text.TextUtils;
-
-import java.util.regex.Matcher;
+import com.actionbarsherlock.app.SherlockFragment;
 
 /**
- * Base URL matcher with utilities for sub-classes to use
+ * Provides a fragment
  */
-public abstract class UrlMatcher {
+public interface FragmentProvider {
 
     /**
-     * Is given input URL a match?
-     * <p>
-     * This method ignores null and empty URLs and does not reset the matcher
-     * with them
+     * Get selected fragment
      *
-     * @param url
-     * @param matcher
-     * @return true if matcher matches, false otherwise
+     * @return fragment
      */
-    protected boolean isMatch(final String url, final Matcher matcher) {
-        return !TextUtils.isEmpty(url) && matcher.reset(url).matches();
-    }
+    SherlockFragment getSelected();
 }

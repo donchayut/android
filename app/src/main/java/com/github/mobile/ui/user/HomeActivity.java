@@ -196,13 +196,12 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             configureTabPager();
         else if (changed) {
             int item = pager.getCurrentItem();
-            host.clearAllTabs();
             adapter.clearAdapter(isDefaultUser);
             adapter.notifyDataSetChanged();
             createTabs();
             if (item >= adapter.getCount())
                 item = adapter.getCount() - 1;
-            pager.setCurrentItem(item, false);
+            pager.setItem(item);
         }
 
         for (OrganizationSelectionListener listener : orgSelectionListeners)
@@ -213,7 +212,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getSupportMenuInflater().inflate(menu.home, optionMenu);
 
-        return true;
+        return super.onCreateOptionsMenu(optionMenu);
     }
 
     @Override
@@ -299,8 +298,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     protected HomePagerAdapter createAdapter() {
-        return new HomePagerAdapter(getSupportFragmentManager(),
-                getResources(), isDefaultUser);
+        return new HomePagerAdapter(this, isDefaultUser);
     }
 
     @Override

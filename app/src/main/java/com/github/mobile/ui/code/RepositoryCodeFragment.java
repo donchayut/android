@@ -103,13 +103,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private RefDialog dialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -276,7 +269,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         else
             branchIconView.setText(string.icon_fork);
 
-        adapter.getWrappedAdapter().setIndented(folder.entry!= null);
+        adapter.getWrappedAdapter().setIndented(folder.entry != null);
 
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(color.text_light);
@@ -298,7 +291,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                     }
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
-            text.append(segments[segments.length - 1]);
+            text.bold(segments[segments.length - 1]);
             pathView.setText(text);
             if (!pathShowing) {
                 adapter.addHeader(pathHeaderView);

@@ -13,40 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.issue;
+package com.github.mobile.core.user;
 
 import com.github.mobile.core.UrlMatcher;
+import com.github.mobile.core.repo.RepositoryUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher for issue URLs that provides the issue number matched
+ * Matcher for user URLs that provides the login matched
  * <p>
  * This class is not thread-safe
  */
-public class IssueUrlMatcher extends UrlMatcher {
+public class UserUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX = "https?://.+/[^/]+/[^/]+/(issues|pull)/(issue/)?(\\d+)";
+    private static final String REGEX = "^https?://[^/]+/([^/]+)$";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     private final Matcher matcher = PATTERN.matcher("");
 
     /**
-     * Get issue number from URL
+     * Get login from URL
      *
      * @param url
-     * @return issue number or -1 if the given URL is not to an issue
+     * @return login or null if the given URL is not to a user
      */
-    public int getNumber(final String url) {
+    public String getLogin(final String url) {
         if (!isMatch(url, matcher))
-            return -1;
+            return null;
 
-        try {
-            return Integer.parseInt(matcher.group(3));
-        } catch (NumberFormatException nfe) {
-            return -1;
-        }
+        String login = matcher.group(1);
+        if (RepositoryUtils.isValidOwner(login))
+            return login;
+        else
+            return null;
     }
 }

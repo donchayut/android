@@ -43,6 +43,7 @@ import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.Repository;
 
 import roboguice.inject.InjectExtra;
@@ -151,14 +152,13 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
         new RefreshBlobTask(repo, sha, this) {
 
             @Override
-            protected void onSuccess(String body) throws Exception {
-                super.onSuccess(body);
+            protected void onSuccess(Blob blob) throws Exception {
+                super.onSuccess(blob);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
-                if (body == null)
-                    body = "";
-                editor.setSource(file, body);
+
+                editor.setSource(file, blob);
             }
 
             @Override
