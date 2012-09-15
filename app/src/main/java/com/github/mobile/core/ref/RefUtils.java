@@ -26,9 +26,11 @@ public class RefUtils {
 
     private static final String PREFIX_REFS = "refs/";
 
-    private static final String PREFIX_TAG = "refs/tags/";
+    private static final String PREFIX_PULL = PREFIX_REFS + "pull/";
 
-    private static final String PREFIX_HEADS = "refs/heads/";
+    private static final String PREFIX_TAG = PREFIX_REFS + "tags/";
+
+    private static final String PREFIX_HEADS = PREFIX_REFS + "heads/";
 
     /**
      * Is reference a branch?
@@ -109,6 +111,6 @@ public class RefUtils {
             return false;
 
         String name = ref.getRef();
-        return !TextUtils.isEmpty(name) && !name.startsWith("refs/pull");
+        return !TextUtils.isEmpty(name) && !name.startsWith(PREFIX_PULL);
     }
 }

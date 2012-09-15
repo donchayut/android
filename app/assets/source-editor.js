@@ -22,7 +22,7 @@ function getMode(extension) {
     break;
   case "clj":
     mode.mode = "text/x-clojure";
-    mode.file = extension;
+    mode.file = "clojure";
     break;
   case "coffee":
     mode.mode = "text/x-coffeescript";
@@ -37,34 +37,37 @@ function getMode(extension) {
     mode.file = "clike";
     break;
   case "css":
+  case "sass":
+  case "scss":
     mode.mode = "text/css";
-    mode.file = extension;
+    mode.file = "css";
     break;
   case "erl":
     mode.mode = "text/x-erlang";
+    mode.file = "erlang";
     break;
   case "hs":
   case "hsc":
     mode.mode = "text/x-haskell";
+    mode.file = "haskell";
     break;
   case "html":
     mode.mode = "text/html";
+    mode.file = "htmlmixed";
     break;
   case "ini":
-    mode.mode = "text/x-ini";
-    mode.file = extension;
+  case "prefs":
+    mode.mode = "text/x-properties";
+    mode.file = "properties";
     break;
   case "java":
     mode.mode = "text/x-java";
     mode.file = "clike";
     break;
   case "js":
-    mode.mode = "text/javascript";
-    mode.file = extension;
-    break;
   case "json":
-    mode.mode = "application/json";
-    mode.file = extension;
+    mode.mode = "text/javascript";
+    mode.file = "javascript";
     break;
   case "md":
   case "markdown":
@@ -73,11 +76,7 @@ function getMode(extension) {
     break;
   case "pl":
     mode.mode = "text/x-perl";
-    mode.file = extension;
-    break;
-  case "prefs":
-    mode.mode = "text/x-properties";
-    mode.file = "properties";
+    mode.file = "perl";
     break;
   case "py":
     mode.mode = "text/x-python";
@@ -89,7 +88,7 @@ function getMode(extension) {
     break;
   case "rb":
     mode.mode = "text/x-ruby";
-    mode.file = extension;
+    mode.file = "ruby";
     break;
   case "sh":
   case "zsh":
