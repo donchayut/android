@@ -156,6 +156,7 @@ function loadEditor() {
   config.lineNumbers = true;
   config.autofocus = false;
   config.lineWrapping = SourceEditor.getWrap();
+  config.dragDrop = false;
   var editor = CodeMirror(document.body, config);
 
   var mode = getMode(extension);
@@ -166,4 +167,6 @@ function loadEditor() {
 
   if (!config.lineWrapping)
     updateWidth();
+
+  editor.refresh();
 }
