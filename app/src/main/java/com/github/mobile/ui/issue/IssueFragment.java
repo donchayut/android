@@ -41,10 +41,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -60,6 +58,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -68,6 +67,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -173,6 +173,9 @@ public class IssueFragment extends DialogFragment {
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
+        bodyImageGetter = new HttpImageGetter(dialogActivity);
+        commentImageGetter = new HttpImageGetter(dialogActivity);
+
         milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId,
                 issueNumber) {
 
@@ -220,9 +223,6 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        bodyImageGetter = new HttpImageGetter(getActivity());
-        commentImageGetter = new HttpImageGetter(getActivity());
 
         adapter.addHeader(headerView);
         adapter.addFooter(footerView);
@@ -317,7 +317,7 @@ public class IssueFragment extends DialogFragment {
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), avatars,
-                        new HttpImageGetter(activity)));
+                        commentImageGetter));
         list.setAdapter(adapter);
     }
 
@@ -431,27 +431,11 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
-        adapter.getWrappedAdapter().setItems(
-                comments.toArray(new Comment[comments.size()]));
+        adapter.getWrappedAdapter().setItems(comments);
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
         updateHeader(issue);
-
-        CommentListAdapter adapter = getRootAdapter();
-        if (adapter != null)
-            adapter.setItems(comments.toArray(new Comment[comments.size()]));
-    }
-
-    private CommentListAdapter getRootAdapter() {
-        ListAdapter adapter = list.getAdapter();
-        if (adapter == null)
-            return null;
-        adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
-        if (adapter instanceof CommentListAdapter)
-            return (CommentListAdapter) adapter;
-        else
-            return null;
     }
 
     @Override
@@ -529,6 +513,19 @@ public class IssueFragment extends DialogFragment {
         }
     }
 
+    private void shareIssue() {
+        String id = repositoryId.generateId();
+        if (IssueUtils.isPullRequest(issue))
+            startActivity(ShareUtils.create("Pull Request " + issueNumber
+                    + " on " + id, "https://github.com/" + id + "/pull/"
+                    + issueNumber));
+        else
+            startActivity(ShareUtils
+                    .create("Issue " + issueNumber + " on " + id,
+                            "https://github.com/" + id + "/issues/"
+                                    + issueNumber));
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Don't allow options before issue loads
@@ -547,6 +544,9 @@ public class IssueFragment extends DialogFragment {
             return true;
         case id.m_refresh:
             refreshIssue();
+            return true;
+        case id.m_share:
+            shareIssue();
             return true;
         case id.m_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
