@@ -238,4 +238,7 @@
     <string name="tab_all">alle</string>
     <!--  -->
 
+    <string name="share">Teilen</string>
+    <string name="show_password">Passwort anzeigen</string>
+
 </resources>

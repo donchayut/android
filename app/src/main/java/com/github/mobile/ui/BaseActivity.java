@@ -18,15 +18,14 @@ package com.github.mobile.ui;
 import android.os.Bundle;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import java.io.Serializable;
 
 /**
- * Activity that display dialogs
+ * Base sherlock activity
  */
-public abstract class DialogFragmentActivity extends
-        RoboSherlockFragmentActivity implements DialogResultListener {
+public class BaseActivity extends RoboSherlockActivity {
 
     /**
      * Finder bound to this activity's view
@@ -79,10 +78,5 @@ public abstract class DialogFragmentActivity extends
      */
     protected String[] getStringArrayExtra(final String name) {
         return getIntent().getStringArrayExtra(name);
-    }
-
-    @Override
-    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        // Intentionally left blank
     }
 }
